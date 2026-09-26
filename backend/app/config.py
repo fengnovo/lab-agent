@@ -6,6 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent  # 后端项目根目录
 
 class Settings(BaseSettings):
     """配置类"""
+
     DATABASE_URL: str
     JWT_SECRET_KEY: str
     JWT_ALGORITHM: str

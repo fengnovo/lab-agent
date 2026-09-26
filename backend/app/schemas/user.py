@@ -2,6 +2,7 @@ from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, Field
 
+
 # 类型自动校验
 class UserResponse(BaseModel):
     id: int
@@ -18,5 +19,3 @@ class UserResponse(BaseModel):
     model_config = ConfigDict(
         from_attributes=True,
     )
-
-

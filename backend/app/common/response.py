@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Any
 
+
 class Response(BaseModel):
     """统一响应模型"""
 

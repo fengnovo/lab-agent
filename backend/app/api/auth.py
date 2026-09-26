@@ -13,6 +13,7 @@ from app.schemas.auth import LoginResponse
 
 router = APIRouter(prefix="/auth", tags=["认证"])
 
+
 @router.post("/login")
 def login(data: LoginRequest, db: SessionLocal = Depends(get_db)):
     """登录"""
@@ -31,4 +32,7 @@ def login(data: LoginRequest, db: SessionLocal = Depends(get_db)):
     # 创建JWT Token
     token = create_access_token(user.id)
     # 返回登录成功响应
-    return Response.success(msg="登录成功", data = LoginResponse(token=token, user=UserResponse.model_validate(user)))
+    return Response.success(
+        msg="登录成功",
+        data=LoginResponse(token=token, user=UserResponse.model_validate(user)),
+    )
