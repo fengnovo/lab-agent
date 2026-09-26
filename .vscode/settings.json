@@ -9,5 +9,24 @@
     },
     "[typescript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "python.telemtry.enabled": true,
+    "python.analysis.typeCheckingMode": "off",
+    "python.analysis.autoImportCompletions": true,
+    "python.languageServer": "None",
+    "python.analysis.extraPaths": [
+        "./backend"
+    ],
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": false,
+        "strings": false,
+    },
+    "[python]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit",
+            "source.fixAll": "explicit",
+        },
+        "editor.defaultFormatter": "ms-python.black-formatter"
     }
 }
