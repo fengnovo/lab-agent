@@ -12,7 +12,7 @@
                     </template>
                 </el-input>
                 <el-button type="primary" @click="handleSearch">查询</el-button>
-                <el-button type="success" @click="openAddDialog">新增实验室</el-button>
+                <el-button v-if="isAdmin" type="success" @click="openAddDialog">新增实验室</el-button>
             </div>
 
             <!-- 实验室表格 -->
@@ -41,11 +41,14 @@
                 </el-table-column>
                 <el-table-column label="状态" width="90" align="center">
                     <template #default="{ row }">
-                        <el-switch :model-value="row.status" :active-value="1" :inactive-value="0"
+                        <el-switch v-if="isAdmin" :model-value="row.status" :active-value="1" :inactive-value="0"
                             @change="(val: number) => handleStatusChange(row, val)" />
+                        <el-tag v-else :type="row.status === 1 ? 'success' : 'info'">
+                            {{ row.status === 1 ? '开放' : '关闭' }}
+                        </el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" width="150" align="center" fixed="right">
+                <el-table-column v-if="isAdmin" label="操作" width="150" align="center" fixed="right">
                     <template #default="{ row }">
                         <el-button type="primary" link @click="openEditDialog(row)">编辑</el-button>
                         <el-button type="danger" link @click="handleDelete(row)">删除</el-button>
@@ -103,7 +106,7 @@
 </template>
 <script setup lang="ts">
 import { ElMessage, ElMessageBox, ElForm } from 'element-plus'
-import { reactive, ref, onMounted } from 'vue'
+import { reactive, ref, computed, onMounted } from 'vue'
 import {
     pageLabs,
     addLab,
@@ -113,6 +116,10 @@ import {
     type LabCreateRequest,
 } from '@/api/lab'
 import { type LabInfo } from '@/api/lab'
+import { useUser } from '@/utils/user'
+
+const { userInfo } = useUser()
+const isAdmin = computed(() => userInfo.value?.role === 'admin')
 
 const uploadUrl = '/api/files/upload'
 const loading = ref(false)

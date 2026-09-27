@@ -56,6 +56,13 @@ export const pageLabs = (params: LabPageQuery): Promise<LabPageResult> => {
     })
 }
 
+// 查询实验室详情
+export const getLabDetail = (id: number): Promise<LabInfo> => {
+    return request.get<LabInfo>(`/lab/${id}`).then(res => {
+        return (res as unknown as { data: LabInfo }).data
+    })
+}
+
 // 新增实验室
 export const addLab = (data: LabCreateRequest): Promise<{ code: number, msg: string }> => {
     return request.post('/lab/add', data).then(res => {

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { getToken } from '@/utils/auth'
+import { getToken, getUserInfo } from '@/utils/auth'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,16 +32,29 @@ const router = createRouter({
           path: '/manager/lab',
           name: 'Lab',
           component: () => import('@/views/Lab.vue'),
+          meta: { requiresAdmin: true },
+        },
+        {
+          path: '/manager/lablist',
+          name: 'LabList',
+          component: () => import('@/views/LabList.vue'),
+        },
+        {
+          path: '/manager/lablist/:id',
+          name: 'LabDetail',
+          component: () => import('@/views/LabDetail.vue'),
         },
         {
           path: '/manager/equipment',
           name: 'Equipment',
           component: () => import('@/views/Equipment.vue'),
+          meta: { requiresAdmin: true },
         },
         {
           path: '/manager/user',
           name: 'User',
           component: () => import('@/views/User.vue'),
+          meta: { requiresAdmin: true },
         },
         {
           path: '/manager/profile',
@@ -65,10 +78,17 @@ router.beforeEach((to) => {
     return true
   }
   const token = getToken()
-  if (token) {
-    return true
+  if (!token) {
+    return { name: 'Login' }
   }
-  return { name: 'Login' }
+  // 管理页面仅 admin 可访问, 其他角色重定向到实验室列表
+  if (to.meta.requiresAdmin) {
+    const userInfo = getUserInfo()
+    if (userInfo?.role !== 'admin') {
+      return { path: '/manager/lablist' }
+    }
+  }
+  return true
 })
 
 export default router

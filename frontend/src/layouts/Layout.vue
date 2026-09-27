@@ -28,7 +28,7 @@
             </el-header>
             <el-container style="min-height: 0;">
                 <el-aside width="220px">
-                    <el-menu router default-active="/manager/home" style="height: 100%;">
+                    <el-menu router :default-active="$route.path" style="height: 100%;">
                         <el-menu-item index="/manager/home">
                             <el-icon>
                                 <Menu />
@@ -36,21 +36,28 @@
                             <span>系统首页</span>
                         </el-menu-item>
 
-                        <el-menu-item index="/manager/lab">
+                        <!-- student: 只读列表 -->
+                        <el-menu-item index="/manager/lablist" v-if="!isAdmin">
+                            <el-icon>
+                                <OfficeBuilding />
+                            </el-icon>
+                            <span>实验室列表</span>
+                        </el-menu-item>
+
+                        <!-- admin: 管理页面 -->
+                        <el-menu-item index="/manager/lab" v-if="isAdmin">
                             <el-icon>
                                 <OfficeBuilding />
                             </el-icon>
                             <span>实验室管理</span>
                         </el-menu-item>
-
-                        <el-menu-item index="/manager/equipment">
+                        <el-menu-item index="/manager/equipment" v-if="isAdmin">
                             <el-icon>
                                 <Setting />
                             </el-icon>
                             <span>实验室设备管理</span>
                         </el-menu-item>
-
-                        <el-menu-item index="/manager/user">
+                        <el-menu-item index="/manager/user" v-if="isAdmin">
                             <el-icon>
                                 <User />
                             </el-icon>
@@ -67,10 +74,13 @@
 </template>
 <script setup lang="ts">
 import router from '@/router'
+import { computed } from 'vue'
 import { removeUserInfo, removeToken } from '@/utils/auth'
 import { useUser } from '@/utils/user'
 
 const { userInfo, reloadUserInfo } = useUser()
+
+const isAdmin = computed(() => userInfo.value?.role === 'admin')
 
 console.log(userInfo.value)
 
