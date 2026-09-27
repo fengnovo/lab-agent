@@ -33,3 +33,27 @@ class UserUpdateRequest(BaseModel):
 class PasswordResetRequest(BaseModel):
     new_password: str
     old_password: str
+
+
+class UserQueryRequest(BaseModel):
+    page: int = 1
+    page_size: int = 10
+    keyword: str | None = None  # 模糊搜索: 用户名/姓名/手机号/邮箱
+
+
+class UserCreateRequest(BaseModel):
+    username: str
+    password: str
+    name: str
+    role: str = "student"
+    phone: str | None = None
+    email: str | None = None
+
+
+class UserAdminUpdateRequest(BaseModel):
+    name: str | None = None
+    role: str | None = None
+    phone: str | None = None
+    email: str | None = None
+    status: int | None = None
+    password: str | None = None  # 管理员重置密码, 为空则不修改

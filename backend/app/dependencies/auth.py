@@ -29,3 +29,12 @@ def get_current_user(
         raise HTTPException(status_code=404, detail="用户不存在")
 
     return user
+
+
+def get_current_admin_user(
+    current_user: User = Depends(get_current_user),
+) -> User:
+    """校验当前用户是否为管理员"""
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="无权限操作")
+    return current_user

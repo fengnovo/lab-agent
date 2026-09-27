@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-container style="min-height: 100vh;">
+        <el-container style="height: 100vh; overflow: hidden;">
             <el-header style="display: flex; align-items: center; border-bottom: 1px solid #e4e7ed; padding: 0;
             justify-content: space-between;">
                 <div
@@ -26,7 +26,7 @@
                     </el-dropdown>
                 </div>
             </el-header>
-            <el-container>
+            <el-container style="min-height: 0;">
                 <el-aside width="220px">
                     <el-menu router default-active="/manager/home" style="height: 100%;">
                         <el-menu-item index="/manager/home">
@@ -58,7 +58,7 @@
                         </el-menu-item>
                     </el-menu>
                 </el-aside>
-                <el-main style="">
+                <el-main style="padding: 0;">
                     <router-view></router-view>
                 </el-main>
             </el-container>

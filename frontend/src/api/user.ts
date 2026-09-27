@@ -32,3 +32,66 @@ export const resetPasswordUserInfo = (data: { new_password: string, old_password
         return res as unknown as { code: number, msg: string }
     })
 }
+
+
+// ==================== 用户管理(管理员) ====================
+
+export interface UserPageQuery {
+    page: number
+    page_size: number
+    keyword?: string
+}
+
+export interface UserCreateRequest {
+    username: string
+    password: string
+    name: string
+    role: string
+    phone?: string
+    email?: string
+}
+
+export interface UserAdminUpdateRequest {
+    name?: string
+    role?: string
+    phone?: string
+    email?: string
+    status?: number
+    password?: string
+}
+
+export interface UserPageResult {
+    list: UserInfo[]
+    total: number
+    page: number
+    page_size: number
+}
+
+// 分页查询用户列表
+export const pageUsers = (params: UserPageQuery): Promise<UserPageResult> => {
+    return request.get<UserPageResult>('/user/page', { params }).then(res => {
+        // res 是 { code, msg, data } 响应体, 列表数据在 data 里
+        return (res as unknown as { data: UserPageResult }).data
+    })
+}
+
+// 新增用户
+export const addUser = (data: UserCreateRequest): Promise<{ code: number, msg: string }> => {
+    return request.post('/user/add', data).then(res => {
+        return res as unknown as { code: number, msg: string }
+    })
+}
+
+// 管理员更新用户(角色/状态/重置密码等)
+export const adminUpdateUser = (id: number, data: UserAdminUpdateRequest): Promise<{ code: number, msg: string }> => {
+    return request.put(`/user/${id}`, data).then(res => {
+        return res as unknown as { code: number, msg: string }
+    })
+}
+
+// 删除用户
+export const deleteUser = (id: number): Promise<{ code: number, msg: string }> => {
+    return request.delete(`/user/${id}`).then(res => {
+        return res as unknown as { code: number, msg: string }
+    })
+}
