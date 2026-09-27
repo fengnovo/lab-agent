@@ -3,9 +3,9 @@
         <el-card>
             <template #header>
                 <div class="header-bar">
-                    <span>{{ lab?.name || '实验室详情' }}</span>
+                    <span>{{ lab?.name || '实验室详情' }}设备列表</span>
                     <div>
-                        <el-button type="primary" @click="ElMessage.info('预约功能开发中')">预约实验室</el-button>
+                        <el-button v-if="lab?.status === 1" type="primary" @click="openLabReservation">预约实验室</el-button>
                         <el-button @click="router.back()">返回实验室列表</el-button>
                     </div>
                 </div>
@@ -45,8 +45,9 @@
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="110" align="center">
-                    <template #default>
-                        <el-button type="primary" link @click="ElMessage.info('预约功能开发中')">预约</el-button>
+                    <template #default="{ row }">
+                        <el-button type="primary" link :disabled="row.status !== 1"
+                            @click="openEquipmentReservation(row)">预约</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -56,14 +57,17 @@
                 :page-sizes="[10, 20, 50]" layout="total, sizes, prev, pager, next, jumper"
                 @current-change="handlePageChange" @size-change="handleSizeChange" />
         </el-card>
+
+        <!-- 预约弹窗 -->
+        <ReservationDialog ref="dialogRef" :lab="lab" :equipment="currentEquipment" />
     </div>
 </template>
 <script setup lang="ts">
 import { reactive, ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { ElMessage } from 'element-plus'
 import { getLabDetail, type LabInfo } from '@/api/lab'
 import { pageEquipments, type EquipmentInfo, type EquipmentPageQuery } from '@/api/equipment'
+import ReservationDialog from '@/components/ReservationDialog.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -74,6 +78,20 @@ const equipmentList = ref<EquipmentInfo[]>([])
 const total = ref(0)
 const loading = ref(false)
 const defaultEqImg = 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=electronic%20test%20equipment%20oscilloscope%20on%20lab%20bench%2C%20realistic%20photo&image_size=landscape_4_3'
+
+// 预约弹窗
+const dialogRef = ref<InstanceType<typeof ReservationDialog>>()
+const currentEquipment = ref<EquipmentInfo | null>(null)
+
+const openLabReservation = () => {
+    currentEquipment.value = null
+    dialogRef.value?.open()
+}
+
+const openEquipmentReservation = (eq: EquipmentInfo) => {
+    currentEquipment.value = eq
+    dialogRef.value?.open()
+}
 
 const query = reactive<EquipmentPageQuery>({
     page: 1,

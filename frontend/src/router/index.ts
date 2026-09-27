@@ -45,6 +45,17 @@ const router = createRouter({
           component: () => import('@/views/LabDetail.vue'),
         },
         {
+          path: '/manager/my-reservations',
+          name: 'MyReservations',
+          component: () => import('@/views/MyReservations.vue'),
+        },
+        {
+          path: '/manager/reservation',
+          name: 'ReservationManage',
+          component: () => import('@/views/ReservationManage.vue'),
+          meta: { requiresAdmin: true },
+        },
+        {
           path: '/manager/equipment',
           name: 'Equipment',
           component: () => import('@/views/Equipment.vue'),

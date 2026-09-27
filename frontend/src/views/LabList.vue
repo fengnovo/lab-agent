@@ -25,7 +25,8 @@
                         </div>
                         <div class="lab-actions">
                             <el-button size="small" @click="goDetail(lab.id)">查看设备</el-button>
-                            <el-button size="small" type="primary" @click="goDetail(lab.id)">预约</el-button>
+                            <el-button size="small" type="primary" :disabled="lab.status !== 1"
+                                @click="openReservation(lab)">预约</el-button>
                         </div>
                     </div>
                 </el-card>
@@ -37,18 +38,30 @@
                 :page-sizes="[8, 12, 24]" layout="total, sizes, prev, pager, next, jumper"
                 @current-change="handlePageChange" @size-change="handleSizeChange" />
         </el-card>
+
+        <!-- 预约弹窗 -->
+        <ReservationDialog ref="dialogRef" :lab="currentLab" :equipment="null" />
     </div>
 </template>
 <script setup lang="ts">
 import { reactive, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { pageLabs, type LabInfo, type LabPageQuery } from '@/api/lab'
+import ReservationDialog from '@/components/ReservationDialog.vue'
 
 const router = useRouter()
 const loading = ref(false)
 const labList = ref<LabInfo[]>([])
 const total = ref(0)
 const defaultImg = 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20laboratory%20interior%20with%20computers%20and%20equipment%2C%20bright%20clean%20white%20room%2C%20realistic%20photo&image_size=landscape_16_9'
+
+// 预约弹窗
+const dialogRef = ref<InstanceType<typeof ReservationDialog>>()
+const currentLab = ref<LabInfo | null>(null)
+const openReservation = (lab: LabInfo) => {
+    currentLab.value = lab
+    dialogRef.value?.open()
+}
 
 const query = reactive<LabPageQuery>({
     page: 1,

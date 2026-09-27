@@ -43,6 +43,12 @@
                             </el-icon>
                             <span>实验室列表</span>
                         </el-menu-item>
+                        <el-menu-item index="/manager/my-reservations" v-if="!isAdmin">
+                            <el-icon>
+                                <Calendar />
+                            </el-icon>
+                            <span>我的预约</span>
+                        </el-menu-item>
 
                         <!-- admin: 管理页面 -->
                         <el-menu-item index="/manager/lab" v-if="isAdmin">
@@ -56,6 +62,12 @@
                                 <Setting />
                             </el-icon>
                             <span>实验室设备管理</span>
+                        </el-menu-item>
+                        <el-menu-item index="/manager/reservation" v-if="isAdmin">
+                            <el-icon>
+                                <Calendar />
+                            </el-icon>
+                            <span>预约管理</span>
                         </el-menu-item>
                         <el-menu-item index="/manager/user" v-if="isAdmin">
                             <el-icon>
