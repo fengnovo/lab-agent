@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { getToken } from '@/utils/auth'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,6 +46,21 @@ const router = createRouter({
       ],
     },
   ],
+})
+
+// 路由守卫, 检查是否有token
+router.beforeEach((to, from, next) => {
+  // 登录页和注册页不需要token
+  if (to.name === 'Login' || to.name === 'Register') {
+    next()
+    return
+  }
+  const token = getToken()
+  if (token) {
+    next()
+  } else {
+    next({ name: 'Login' })
+  }
 })
 
 export default router

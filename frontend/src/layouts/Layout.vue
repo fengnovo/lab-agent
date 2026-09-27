@@ -17,7 +17,7 @@
                         <div style="display: flex; align-items: center; cursor: pointer;">
                             <img src="@/assets/images/lab-icon.png" alt="avatar"
                                 style="width: 40px; height: 40px; margin-right: 10px;">
-                            <span>admin</span>
+                            <span>{{ userInfo.username }}</span>
                         </div>
                         <template #dropdown>
                             <el-dropdown-item @click="handleLogout">退出登录</el-dropdown-item>
@@ -66,8 +66,15 @@
 </template>
 <script setup lang="ts">
 import router from '@/router'
+import { removeUserInfo, removeToken } from '@/utils/auth'
+import { useUser } from '@/utils/user'
+
+const { userInfo, reloadUserInfo } = useUser()
 
 const handleLogout = () => {
+    removeToken()
+    removeUserInfo()
+    reloadUserInfo()
     router.push('/login')
 }
 </script>

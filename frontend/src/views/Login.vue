@@ -25,7 +25,10 @@
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import router from '@/router'
+import { login } from '@/api/auth'
+import { type User, useUser } from '@/utils/user'
 
+const { saveUserInfo } = useUser()
 
 const form = ref({
     username: '',
@@ -45,21 +48,23 @@ const rules = ref({
 })
 
 const submitForm = async () => {
-    loading.value = true
-    if (!formRef.value) {
-        return
-    }
-    try {
-        const success = await formRef.value.validate()
-        console.log(form.value)
+    if (!formRef.value) return
 
-        if (success) {
+    const valid = await (formRef.value as unknown as {
+        validate: () => Promise<boolean>
+    })!.validate().catch(() => false)
+    console.log('登录表单验证结果:', valid, form.value)
+    if (!valid) return
+
+    try {
+        loading.value = true
+        const response: User = await login(form.value)
+        if (response) {
+            saveUserInfo(response)
             ElMessage.success('登录成功')
-            loading.value = false
-            router.push('/')
+            router.push('/manager/home')
         }
-    } catch (error) {
-        ElMessage.error('登录失败，请检查用户名和密码')
+    } finally {
         loading.value = false
     }
 }
