@@ -28,3 +28,8 @@ class UserUpdateRequest(BaseModel):
     phone: str | None = None
     email: str | None = None
     avatar: str | None = None
+
+
+class PasswordResetRequest(BaseModel):
+    new_password: str
+    old_password: str

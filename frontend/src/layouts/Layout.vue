@@ -15,11 +15,12 @@
                     line-height: 60px; background-color: #fff; display: flex; align-items: center; justify-content: end;">
                     <el-dropdown>
                         <div style="display: flex; align-items: center; cursor: pointer;">
-                            <el-avatar :size="46" :src="userInfo.avatar" />
+                            <el-avatar :size="30" :src="userInfo.avatar" />
                             <span style="margin-left: 10px;">{{ userInfo.username }}</span>
                         </div>
                         <template #dropdown>
                             <el-dropdown-item @click="handleProfile">个人信息</el-dropdown-item>
+                            <el-dropdown-item @click="handlePasswordReset">重置密码</el-dropdown-item>
                             <el-dropdown-item @click="handleLogout">退出登录</el-dropdown-item>
                         </template>
                     </el-dropdown>
@@ -82,6 +83,10 @@ const handleLogout = () => {
 
 const handleProfile = () => {
     router.push('/manager/profile')
+}
+
+const handlePasswordReset = () => {
+    router.push('/manager/password-reset')
 }
 </script>
 <style scoped>
