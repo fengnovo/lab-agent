@@ -58,3 +58,5 @@ venv/
 # Runtime data
 *.db
 *.sqlite3
+
+uploads/

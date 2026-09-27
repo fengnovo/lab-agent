@@ -48,4 +48,4 @@ def register(data: RegisterRequest, db: SessionLocal):
     # 保存用户到数据库
     db.add(user_model)
     db.commit()
-    db.flush()
+    db.refresh(user_model)

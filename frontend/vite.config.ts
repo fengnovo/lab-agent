@@ -14,6 +14,11 @@ export default defineConfig({
         secure: false,
         rewrite: (path: string) => path.replace(/^\/api/, '/api'),
       },
+      '/uploads': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
   plugins: [

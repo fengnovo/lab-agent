@@ -19,3 +19,12 @@ class UserResponse(BaseModel):
     model_config = ConfigDict(
         from_attributes=True,
     )
+
+
+class UserUpdateRequest(BaseModel):
+    username: str | None = None  # 一定要默认赋值None，否则会报错
+    password: str | None = None
+    name: str | None = None
+    phone: str | None = None
+    email: str | None = None
+    avatar: str | None = None

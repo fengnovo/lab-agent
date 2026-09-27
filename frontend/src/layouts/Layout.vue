@@ -15,11 +15,11 @@
                     line-height: 60px; background-color: #fff; display: flex; align-items: center; justify-content: end;">
                     <el-dropdown>
                         <div style="display: flex; align-items: center; cursor: pointer;">
-                            <img src="@/assets/images/lab-icon.png" alt="avatar"
-                                style="width: 40px; height: 40px; margin-right: 10px;">
-                            <span>{{ userInfo.username }}</span>
+                            <el-avatar :size="46" :src="'http://localhost:8000' + userInfo.avatar" />
+                            <span style="margin-left: 10px;">{{ userInfo.username }}</span>
                         </div>
                         <template #dropdown>
+                            <el-dropdown-item @click="handleProfile">个人信息</el-dropdown-item>
                             <el-dropdown-item @click="handleLogout">退出登录</el-dropdown-item>
                         </template>
                     </el-dropdown>
@@ -71,11 +71,17 @@ import { useUser } from '@/utils/user'
 
 const { userInfo, reloadUserInfo } = useUser()
 
+console.log(userInfo.value)
+
 const handleLogout = () => {
     removeToken()
     removeUserInfo()
     reloadUserInfo()
     router.push('/login')
+}
+
+const handleProfile = () => {
+    router.push('/manager/profile')
 }
 </script>
 <style scoped></style>
