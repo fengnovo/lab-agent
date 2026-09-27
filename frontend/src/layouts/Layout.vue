@@ -15,7 +15,7 @@
                     line-height: 60px; background-color: #fff; display: flex; align-items: center; justify-content: end;">
                     <el-dropdown>
                         <div style="display: flex; align-items: center; cursor: pointer;">
-                            <el-avatar :size="46" :src="'http://localhost:8000' + userInfo.avatar" />
+                            <el-avatar :size="46" :src="userInfo.avatar" />
                             <span style="margin-left: 10px;">{{ userInfo.username }}</span>
                         </div>
                         <template #dropdown>
@@ -84,4 +84,8 @@ const handleProfile = () => {
     router.push('/manager/profile')
 }
 </script>
-<style scoped></style>
+<style scoped>
+:deep(.el-tooltip__trigger) {
+    outline: none;
+}
+</style>

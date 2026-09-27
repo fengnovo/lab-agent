@@ -15,15 +15,16 @@
                     <el-input size="large" v-model="form.name" placeholder="请输入名称"></el-input>
                 </el-form-item>
                 <el-form-item prop="phone" label="手机号">
-                    <el-input size="large" v-model="form.phone" placeholder="请输入手机号"></el-input>
+                    <el-input size="large" v-model="form.phone" maxlength="11" placeholder="请输入手机号"></el-input>
                 </el-form-item>
                 <el-form-item prop="email" label="邮箱">
                     <el-input size="large" v-model="form.email" placeholder="请输入邮箱"></el-input>
                 </el-form-item>
                 <el-form-item prop="avatar" label="头像">
-                    <el-upload class="avatar-uploader" :view-file-list="true" :action="uploadAvatarUrl"
-                        :show-file-list="true" :auto-upload="true" :on-success="handleAvatarSuccess">
-                        <img v-if="form.avatar" :src="form.avatar" class="avatar" />
+                    <el-upload class="avatar-uploader" :view-file-list="true" :accept="'image/*'"
+                        :action="uploadAvatarUrl" :show-file-list="true" :auto-upload="true"
+                        :on-success="handleAvatarSuccess">
+                        <el-avatar :size="100" v-if="form.avatar" :src="form.avatar" class="avatar" />
                         <el-icon v-else class="avatar-uploader-icon">
                             <Plus />
                         </el-icon>
@@ -57,8 +58,8 @@ const form = reactive({
 const rules = reactive({
     username: [{ required: false, message: '请输入用户名', trigger: 'blur' }],
     name: [{ required: false, message: '请输入名字', trigger: 'blur' }],
-    phone: [{ required: false, message: '请输入手机号', trigger: 'blur' }],
-    email: [{ required: false, message: '请输入邮箱', trigger: 'blur' }],
+    phone: [{ required: false, pattern: /^1[3456789]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur' }],
+    email: [{ required: false, pattern: /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*$/, message: '请输入正确的邮箱', trigger: 'blur' }],
 })
 
 const formRef = ref<InstanceType<typeof ElForm>>()

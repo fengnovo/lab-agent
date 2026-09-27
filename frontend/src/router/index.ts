@@ -54,18 +54,16 @@ const router = createRouter({
 })
 
 // 路由守卫, 检查是否有token
-router.beforeEach((to, from, next) => {
+router.beforeEach((to) => {
   // 登录页和注册页不需要token
   if (to.name === 'Login' || to.name === 'Register') {
-    next()
-    return
+    return true
   }
   const token = getToken()
   if (token) {
-    next()
-  } else {
-    next({ name: 'Login' })
+    return true
   }
+  return { name: 'Login' }
 })
 
 export default router
