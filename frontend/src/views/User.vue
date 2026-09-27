@@ -63,7 +63,7 @@
 
             <!-- 分页 -->
             <el-pagination class="pagination" :current-page="query.page" :page-size="query.page_size" :total="total"
-                :page-sizes="[10, 20, 50]" layout="total, sizes, prev, pager, next, jumper"
+                :page-sizes="[5, 10, 20, 50]" layout="total, sizes, prev, pager, next, jumper"
                 @current-change="handlePageChange" @size-change="handleSizeChange" />
         </el-card>
 
