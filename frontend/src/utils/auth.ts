@@ -5,7 +5,13 @@ export interface UserInfo {
   id: number
   username: string
   email: string
+  avatar: string
+  created_at: string
+  name: string
+  phone: string
   role: string
+  status: number
+  updated_at: string
 }
 
 export const getToken = () => localStorage.getItem(TOKEN_KEY)

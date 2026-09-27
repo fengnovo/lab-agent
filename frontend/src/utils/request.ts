@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import router from '@/router'
-import { getToken, removeToken, removeUserInfo, getUserInfo } from './auth'
+import { getToken, removeToken, removeUserInfo } from './auth'
 
 const service = axios.create({
   baseURL: '/api',
@@ -57,4 +57,5 @@ service.interceptors.response.use(
   },
 )
 
+// 导出，让外部知道 post 返回的是 Promise<T> 而不是 Promise<AxiosResponse<T>> 
 export default service

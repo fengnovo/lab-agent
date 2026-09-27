@@ -3,13 +3,13 @@ import { type UserInfo, getUserInfo, setToken, setUserInfo } from '@/utils/auth'
 
 const userInfo = ref<UserInfo>(getUserInfo())
 
-export interface User {
+export interface UserResponse {
     user: UserInfo
     token: string
 }
 
 export const useUser = () => {
-    const saveUserInfo = (data: User) => {
+    const saveUserInfo = (data: UserResponse) => {
         setToken(data.token)
         setUserInfo(data.user)
         userInfo.value = data.user

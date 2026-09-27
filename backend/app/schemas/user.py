@@ -9,10 +9,10 @@ class UserResponse(BaseModel):
     username: str
     name: str
     role: str
-    phone: str
+    phone: str | None
     avatar: str | None
-    status: int
     email: str | None
+    status: int
     created_at: datetime = Field(validation_alias="create_time")
     updated_at: datetime = Field(validation_alias="update_time")
 

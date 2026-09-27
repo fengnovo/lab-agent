@@ -26,6 +26,7 @@
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import router from '@/router'
+import { register } from '@/api/auth'
 
 const form = ref({
     username: '',
@@ -36,6 +37,17 @@ const form = ref({
 const loading = ref(false)
 const formRef = ref(null)
 
+const validateConfirmPassword = (rule: any, value: string, callback: any) => {
+    if (!value) {
+        callback(new Error('请输入确认密码'))
+    } else {
+        if (value !== form.value.password) {
+            callback(new Error('两次输入密码不一致'))
+        }
+        callback()
+    }
+}
+
 const rules = ref({
     username: [
         { required: true, message: '请输入用户名', trigger: 'blur' }
@@ -44,27 +56,29 @@ const rules = ref({
         { required: true, message: '请输入密码', trigger: 'blur' }
     ],
     confirmPassword: [
-        { required: true, message: '请确认密码', trigger: 'blur' }
+        { validator: validateConfirmPassword, trigger: 'blur' }
     ]
 })
 
 const submitForm = async () => {
-    loading.value = true
-    if (!formRef.value) {
-        return
-    }
-    try {
-        const success = await formRef.value.validate()
-        console.log(form.value)
+    if (!formRef.value) return
 
-        if (success) {
-            console.log('注册成功')
-            loading.value = false
-            router.push('/')
+    const valid = await (formRef.value as unknown as {
+        validate: () => Promise<boolean>
+    })!.validate().catch(() => false)
+    console.log('注册表单验证结果:', valid, form.value)
+    if (!valid) return
+
+    try {
+        loading.value = true
+        const res = await register(form.value)
+        console.log('注册结果:', res)
+        if (res.code === 200) {
+            ElMessage.success('注册成功')
+            router.push('/login')
         }
     } catch (error) {
         console.log('注册失败', error)
-        ElMessage.error('注册失败')
         loading.value = false
     }
 }

@@ -14,7 +14,7 @@
                     <el-button class="login-form-button" type="primary" size="large" :loading="loading"
                         @click="submitForm">登录</el-button>
                     <div class="login-form-register">
-                        还没有账号？请<a href="/register" style="color: #409eff;">请注册账号</a>
+                        还没有账号？请<router-link to="/register" style="color: #409eff;">请注册账号</router-link>
                     </div>
                 </el-form-item>
             </el-form>
@@ -26,7 +26,7 @@ import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import router from '@/router'
 import { login } from '@/api/auth'
-import { type User, useUser } from '@/utils/user'
+import { useUser } from '@/utils/user'
 
 const { saveUserInfo } = useUser()
 
@@ -58,7 +58,7 @@ const submitForm = async () => {
 
     try {
         loading.value = true
-        const response: User = await login(form.value)
+        const response = await login(form.value)
         if (response) {
             saveUserInfo(response)
             ElMessage.success('登录成功')
